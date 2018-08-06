@@ -1,0 +1,31 @@
+﻿
+<!--This File contains the tbody so it could be return when user adds new Role
+    This tiny module is partial view for another Partial "_DomainsPartail.cshtml" so in a way nested partial
+    So every time user adds a new role Server "/Admin/AddRole" returns this partail for AJAX refresh of portion
+    -->
+
+@model Ticketing.Data.TicketModel.ViewModels.UserRoleVM
+
+@foreach (var item in Model.Roles)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(Model => item.Name)
+        </td>
+        <td>
+            
+            @Ajax.ActionLink(" ",
+                             "deleteRoles",
+                             "Admin",
+                             new { guid = item.Id},
+                             new AjaxOptions { HttpMethod = "POST",
+                                 InsertionMode = InsertionMode.Replace,
+                                 UpdateTargetId = "RoleTbodyDiv",
+                                 //Confirm="You are about to delete Role",
+                                 OnComplete =""
+                             }, htmlAttributes: new { @class = "glyphicon glyphicon-trash btn btn-sm btn-danger" } )
+           
+        </td>
+    </tr>
+}
+

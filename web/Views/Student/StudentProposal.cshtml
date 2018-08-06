@@ -1,0 +1,247 @@
+﻿@model Ticketing.Data.ViewModels.ProposalVM
+@Html.Partial("StudentHeader")
+<h3>
+    Create a ticket by submittign a proposal
+</h3>
+<link href="~/Content/summernote/summernote.css" rel="stylesheet" />
+<hr />
+<div class="row">
+    <div class="col-lg-9">
+        <table>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @using (Html.BeginForm("StudentProposal", "Student"))
+            {
+                @Html.AntiForgeryToken()
+
+
+                <!--Proposal Type-->
+                <tr>
+                    <td>
+                        <div>
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(m => m.ProposalType, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-lg-9">
+                                    @Html.HiddenFor(m => m.ProposalType.Value)
+                                    @Html.DropDownListFor(m => m.ProposalType.Key, Model.AllProposalTypes
+                                              .Select(d => new SelectListItem { Text = d.Name, Value = d.RecID.ToString() }).
+                                              ToList(), "Select an Option", htmlAttributes: new { @class = "form-control col-lg-8", id = "ProposalType" })
+                                    @Html.ValidationMessageFor(m => m.ProposalType.Key, "", new { @class = "text-danger col-lg-4" })
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!--Project Name-->
+                <tr>
+                    <td>
+                        <div>
+                            <div class="form-group col-lg-12">
+                                @Html.LabelFor(m => m.Name, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-lg-9">
+                                    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control col-lg-8", @placeholder = "Ticketing App" } })
+                                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger col-lg-4" })
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!--Project Name Ends Here-->
+                        <!--Proposal For "Master" or "Bachelor" or "PHD starts here"-->
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(m => m.DegreeType, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-lg-9">
+                                @Html.DropDownListFor(m => m.DegreeType.Key,
+                                         Model.AllDegreeTypes.
+                                         Select(d => new SelectListItem { Text = d.Name, Value = d.Recid.ToString() }).ToList(),
+                                         "Select an Option",
+                                         htmlAttributes: new { @class = "form-control col-lg-8", id = "ProposalDegreeType" })
+                                @Html.ValidationMessageFor(m => m.DegreeType.Key, "", new { @class = "text-danger col-lg-4" })
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!--Proposal For "Master" or "Bachelor" or "PHD Ends"-->
+                <tr>
+                    <td>
+                        <div class="form-group col-lg-12">
+                            <!--DegreeProgram Starts Here"-->
+                            @Html.LabelFor(m => m.DegreeProgram, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-lg-9">
+                                @Html.DropDownListFor(m => m.DegreeProgram.Key,
+                         new SelectList(new List<SelectListItem>()),
+                         "Select an Option",
+                         htmlAttributes: new { @class = "form-control col-lg-8", id = "DegreeProgramsList" })
+                                @*<select id="DegreeProgramsList" name="DegreePgoram" class="form-control"></select>*@
+                                @Html.ValidationMessageFor(m => m.DegreeProgram.Key, "", new { @class = "text-danger col-lg-4" })
+                                <!--DegreeProgram Ends Here"-->
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group col-lg-12">
+                            @Html.LabelFor(m => m.Specilizations, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-lg-9">
+                                @Html.DropDownListFor(m => m.Specilizations.Key,
+new SelectList(new List<SelectListItem>()),
+"Select an Option",
+htmlAttributes: new { @class = "form-control chosen-select chosen SpecializationList col-lg-8", id = "ProposalSpecializationList" })
+                                @*<select id="ProposalSpecializationList" name="ProposalSpecializations" class="form-control chosen-select chosen SpecializationList"></select>*@
+                                @Html.ValidationMessageFor(m => m.Specilizations.Key, "", new { @class = "text-danger col-lg-4" })
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+
+                        <div class="panel panel-default" id="ProposalSupervisors">
+                            <div class="panel-heading">
+                                <div class="form-group">
+                                    <select id="ShowAllSupervisors" class="form-control col-md-5">
+
+                                        <option value="Suggsted">System suggestd Professors </option>
+                                        <option value="All">All Professors</option>
+                                    </select>
+                                    <span data-toggle='tooltip' class="glyphicon glyphicon-exclamation-sign" data-placement="top" title='By default you can only see supervisors teaching courses in specializations you have selected, Check in the check-box to see all supervisors'></span>
+                                </div>
+
+                            </div>
+                            <div class="panel-body row">
+
+                                <div class="form-group col-lg-12">
+                                    @Html.LabelFor(m => m.FirstSupervisor, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    @Html.DropDownListFor(m => m.FirstSupervisor.Key,
+                                new SelectList(new List<SelectListItem>()),
+                                "Select an Option",
+                                htmlAttributes: new { @class = "form-control col-lg-8", id = "ProposalFirstSupervisor" })
+                                    @*<select id="ProposalFirstSupervisor" name="ProposalFirstSuperVisor" class="form-control"></select>*@
+                                    @Html.ValidationMessageFor(m => m.FirstSupervisor.Key, "", new { @class = "text-danger col-lg-4" })
+                                </div>
+
+                                <div id="SecondSupervisor">
+
+
+                                    <div class="form-group col-lg-12">
+                                        @Html.LabelFor(m => m.SecondSupervisor, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        @Html.DropDownListFor(m => m.SecondSupervisor.Key,
+new SelectList(new List<SelectListItem>()),
+"Select an Option",
+htmlAttributes: new { @class = "form-control col-lg-8", id = "ProposalSecondSupervisor" })
+                                        @Html.ValidationMessageFor(m => m.SecondSupervisor.Key, "", new { @class = "text-danger col-lg-4" })
+                                    </div>
+
+
+
+                                    <div id="ExternalSupervisDiv" style="display:none;" class="ExternalSupervisDiv">
+
+
+                                        <div class="form-group col-lg-12">
+                                            @Html.LabelFor(model => Model.ExternalSupervisor.FirstName, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => Model.ExternalSupervisor.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => Model.ExternalSupervisor.FirstName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-lg-12">
+                                            @Html.LabelFor(model => Model.ExternalSupervisor.LastName, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => Model.ExternalSupervisor.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => Model.ExternalSupervisor.LastName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-lg-12">
+                                            @Html.LabelFor(model => Model.ExternalSupervisor.Email, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9 ">
+                                                @Html.EditorFor(model => Model.ExternalSupervisor.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => Model.ExternalSupervisor.Email, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-lg-12">
+                                            @Html.LabelFor(model => Model.ExternalSupervisor.Company, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => Model.ExternalSupervisor.Company, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => Model.ExternalSupervisor.Company, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-lg-12">
+                                            @Html.LabelFor(model => Model.ExternalSupervisor.Notes, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => Model.ExternalSupervisor.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => Model.ExternalSupervisor.Notes, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+
+                                    </div><!--End of External-->
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </td>
+                </tr>
+                <!--Select Supervisor Starts here-->
+                <!--Select second Supervisor ends here-->
+                <!-- Proposal Content-->
+                <tr>
+                    <td>
+                        <div style="width: 750px;">
+                            <textarea id="ProposalContent"  name="ProposalContent.Content" class="form-group col-lg-12"></textarea>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Submit Proposal" id="SubmitProposal" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+
+
+                <!--Temporrary fillings-->
+
+
+
+
+            }
+        </table>
+    </div> <!--End of Col-lg-9-->
+    <div class="col-lg-3">
+        <h4>Sample Proposals</h4>
+        <table>
+            <tr>
+                <td><a href="#"><img class="PdfIcon" src="~/Content/Images/Icons/pdf.png" />MIE</a></td>
+            </tr>
+            <tr>
+                <td><a href="#"><img class="PdfIcon" src="~/Content/Images/Icons/pdf.png" />Wissenschaft</a></td>
+            </tr>
+            <tr>
+                <td><a href="#"><img class="PdfIcon" src="~/Content/Images/Icons/pdf.png" />Electronics</a></td>
+            </tr>
+            <tr>
+                <td><a href="#"><img class="PdfIcon" src="~/Content/Images/Icons/pdf.png" />Social Arbeit und gusenSchaft</a></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+<script src="~/Scripts/summernote/summernote.js"></script>

@@ -1,0 +1,47 @@
+﻿@model Ticketing.Data.ViewModels.SupervisorDashBoard
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("SupervisorHeader")
+
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-1">
+        <div class="panel panel-default">
+            <div class="panel-heading">Tickets</div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th> Name </th>
+                            <th>Status</th>
+                            <th>Submission Date</th>
+                            <th>Study Program</th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model.Proposals)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(item.Name, "Index", "Ticket", new { Id = item.RecId }, null)</td>
+                            <td>@item.Status</td>
+                            @*<td> @item.CreationDate.Value.ToShortDateString()</td>*@
+                            <td> @item.SubmissionDate.Value.ToShortDateString()</td>
+                            <td> @item.StudyProgram</td>
+
+                        </tr>
+                    }
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">Notifications</div>
+            <div class="panel-body">30 activities</div>
+        </div>
+    </div>
+</div>
