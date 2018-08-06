@@ -1,0 +1,14 @@
+﻿@model Ticketing.Data.TicketModel.ViewModels.AllowedDomainRolesSingleVM
+<tr>
+    <td>
+        <div id="domain">
+            @Html.DisplayFor(Model => Model.newDomainName)
+        </div>
+    </td>
+    <td>
+        <div id="domainDefaultRoles" class="col-md-6">
+            @Html.DropDownList(@Model.newDomainName, Model.AllRoles.Select(r => new SelectListItem { Text = r, Value = r }),
+                   htmlAttributes: new { @class = "chosen-select chosen ChosenDomainRoles", multiple = "multiple", id = "ChosenDomainRoles" })
+        </div>
+    </td>
+</tr>

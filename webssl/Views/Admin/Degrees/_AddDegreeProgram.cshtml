@@ -1,0 +1,47 @@
+﻿@model Ticketing.Data.ViewModels.DepartmetnNameAndDegreeTypesVM
+<!--Model contain two elements, first one is Department.RECID and second one is DegreeProgram.RECID-->
+<div style="padding:40px;">
+    @using (Ajax.BeginForm("PostADegreeProgram", "Admin", null,
+    new AjaxOptions
+    {
+
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.InsertAfter,
+        UpdateTargetId = (Model.DepartmentRecID + "DegreePrograms"),
+        OnSuccess = "FadeOutUserInfo",
+
+    }
+    ))
+    {
+        @Html.AntiForgeryToken()
+    <h4>Füge einen neuen Studiengang hinzu </h4>
+        <hr />
+
+        <div class="form-inline row">
+            @Html.Hidden("DepId", Model.DepartmentRecID)
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group col-lg-4">
+                @Html.Editor("Name", new { htmlAttributes = new { @class = "form-control", placeholder = "Ex. Bachelor of Computer" } })
+                @Html.ValidationMessage("Can't be Empty", "", new { @class = "text-danger" })
+
+            </div>
+            <div class="form-group col-lg-4">
+                
+                @Html.DropDownList("DegreeType", Model.AllDegreeTypes.Select( x => new SelectListItem { Text = x.Name, Value =x.Name}), "  ",new { @class = "form-control" })
+                @*@Html.Editor("Description", new { htmlAttributes = new { @class = "form-control", placeholder = "Description" } })*@
+
+            </div>
+            <div class="form-group col-md-4">
+                <div>
+                    <input type="submit" value="Add" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+
+
+
+    }
+
+</div>
